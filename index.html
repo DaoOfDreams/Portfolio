@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio</title>
+
+  <!-- Google Fonts for a clean look -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+
+<style>
+    /* Basic Reset */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a {
+      color: #bb86fc;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover {
+      color: #3700b3;
+      text-decoration: underline;
+    }
+    header {
+	  position: sticky; /* Sticky at top */
+	  top: 0; /* Sticks to the viewport top */
+	  background-color: rgba(31, 31, 31, 0.75); /* Semi-transparent dark background */
+	  backdrop-filter: blur(10px); /* Optional: glass blur effect behind the navbar */
+	  padding: 1rem 2rem;
+	  display: flex;
+	  justify-content: space-between;
+	  align-items: center;
+	  z-index: 100; /* Make sure it layers above content */
+	  transition: background-color 0.3s ease;
+	}
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+    .nav-links li {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+	
+	#home {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100vh;
+    padding: 2rem 1rem 1rem;
+    max-width: 900px;
+    margin: 0 auto 4rem;
+    gap: 1.5rem;
+  }
+
+  #home-content {
+    z-index: 10;
+  }
+
+  #home h1 {
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+  }
+
+  #home p {
+    font-size: 1.3rem;
+    color: #cccccc;
+    max-width: 600px;
+  }
+
+  /* Carousel container takes remaining height */
+  #carousel {
+    flex-grow: 1;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #2a2a2a;
+  }
+
+  #carousel img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    border-radius: 12px;
+  }
+
+  #carousel img.active {
+    display: block;
+  }
+
+  /* Carousel navigation dots */
+  #carousel-dots {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+  }
+
+  #carousel-dots button {
+    border: none;
+    background-color: #bb86fcaa;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  #carousel-dots button.active {
+    background-color: #bb86fc;
+  }
+    main {
+      flex: 1;
+      max-width: 900px;
+      margin: 1rem auto 2rem;
+      padding: 0 1rem;
+    }
+    section {
+      margin-bottom: 4rem;
+    }
+    h1, h2 {
+      font-weight: 600;
+      color: #ffffff;
+    }
+    h1 {
+      font-size: 2.75rem;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #bb86fc;
+      padding-bottom: 0.25rem;
+      max-width: fit-content;
+    }
+    p {
+      font-size: 1.125rem;
+      color: #cccccc;
+      max-width: 650px;
+    }
+    /* Skills */
+    #skills ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 2rem;
+      padding-left: 0;
+    }
+    #skills li {
+      background-color: #2a2a2a;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: 500;
+      box-shadow: 0 0 6px #bb86fc;
+      min-width: 100px;
+      text-align: center;
+    }
+	  /* Projects grid for side-by-side */
+	  #projects .projects-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 2rem;
+	  }
+
+	  /* Project item with button to open modal */
+	  #projects .project-item {
+		background-color: #1f1f1f;
+		padding: 1rem 1.5rem;
+		border-radius: 8px;
+		box-shadow: 0 0 10px #2a2a2a;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	  }
+
+	  #projects .project-item h3 {
+		margin-bottom: 0.5rem;
+		color: #bb86fc;
+	  }
+
+	  #projects .project-item p {
+		color: #ddd;
+		flex-grow: 1;
+	  }
+
+	  #projects .project-item button {
+		margin-top: 1rem;
+		align-self: flex-start;
+		background-color: #bb86fc;
+		color: #121212;
+		font-weight: 700;
+		padding: 0.5rem 1rem;
+		border: none;
+		border-radius: 6px;
+		cursor: pointer;
+		transition: background-color 0.3s ease;
+		font-size: 1rem;
+	  }
+	  #projects .project-item button:hover {
+		background-color: #3700b3;
+		color: #fff;
+	  }
+
+	  /* Modal styles */
+	  .modal {
+		display: none;
+		position: fixed;
+		z-index: 999;
+		top: 0; left: 0; right: 0; bottom: 0;
+		background-color: rgba(0, 0, 0, 0.75);
+		justify-content: center;
+		align-items: center;
+		padding: 1rem;
+	  }
+
+	  .modal-content {
+		background-color: #1f1f1f;
+		border-radius: 8px;
+		max-width: 600px;
+		width: 100%;
+		padding: 1.5rem 2rem;
+		position: relative;
+		color: #ddd;
+	  }
+
+	  .modal-content h3 {
+		color: #bb86fc;
+	  }
+
+	  .modal-close {
+		position: absolute;
+		top: 0.5rem;
+		right: 1rem;
+		border: none;
+		background: transparent;
+		font-size: 1.5rem;
+		color: #bb86fc;
+		cursor: pointer;
+		font-weight: 700;
+	  }
+	  
+    /* Contact Form */
+    #contact form {
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    #contact label {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    #contact input, #contact textarea {
+      background-color: #2a2a2a;
+      border: none;
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      color: #e0e0e0;
+      font-size: 1rem;
+      resize: vertical;
+      box-shadow: inset 0 0 6px #555;
+      transition: box-shadow 0.3s ease;
+    }
+    #contact input:focus, #contact textarea:focus {
+      outline: none;
+      box-shadow: inset 0 0 8px #bb86fc;
+    }
+    #contact button {
+      background-color: #bb86fc;
+      color: #121212;
+      font-weight: 700;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 1.125rem;
+    }
+    #contact button:hover {
+      background-color: #3700b3;
+      color: #fff;
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #666666;
+      border-top: 1px solid #222;
+    }
+    /* Responsive */
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .nav-links {
+        gap: 1rem;
+        justify-content: center;
+        width: 100%;
+      }
+      #skills ul {
+        justify-content: center;
+      }
+    }
+	
+	/* Video background styling */
+	#bg-video {
+	  position: fixed;
+	  top: 0; left: 0;
+	  width: 100vw;
+	  height: 100vh;
+	  object-fit: cover;
+	  z-index: -1;
+	  filter: brightness(0.35) contrast(1.2);
+	  /* Slight dark overlay via brightness */
+	}
+
+	/* Music toggle button styling */
+	#music-toggle {
+	  position: fixed;
+	  bottom: 20px;
+	  right: 20px;
+	  background-color: #bb86fccc;
+	  border: none;
+	  border-radius: 50%;
+	  width: 50px;
+	  height: 50px;
+	  font-size: 24px;
+	  cursor: pointer;
+	  color: #121212;
+	  box-shadow: 0 0 8px #bb86fcaa;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  transition: background-color 0.3s ease;
+	  z-index: 1000;
+	}
+
+	#music-toggle:hover {
+	  background-color: #bb86fc;
+	}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <a href="#home" style="font-weight: 700; font-size: 1.5rem;">Navneet</a>
+    </div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#home" aria-label="Home section">Home</a></li>
+        <li><a href="#about" aria-label="About me section">About Me</a></li>
+        <li><a href="#skills" aria-label="Skills section">Skills</a></li>
+        <li><a href="#projects" aria-label="Projects section">Projects</a></li>
+        <li><a href="#contact" aria-label="Contact section">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  
+	<video id="bg-video" autoplay muted loop playsinline>
+	  <source src="./Assets/bkg_video.mp4" type="video/mp4" />
+	  Your browser does not support the video tag.
+	</video>
+
+	<button id="music-toggle" aria-label="Toggle background music" title="Toggle Music">
+	  ;)
+	</button>
+
+	<audio id="bg-music" preload="auto" loop
+	  <source src="./Assets/whispering-stars.mp3" type="audio/mp3" />
+	  Your browser does not support the audio element.
+	</audio>
+
+
+  <main>
+    <section id="home">
+  <div id="home-content">
+    <h1>Hello, I'm Navneet Pujari</h1>
+    <p>I am from Uttrakhand, India :)</p>
+  </div>
+
+  <div id="carousel" aria-label="Portfolio images carousel">
+    <img src="./Assets/dusk_night_sky.jpg" alt="Nature landscape 1" class="active" />
+    <img src="./Assets/Earth.jpg" alt="Nature landscape 2" />
+    <div id="carousel-dots" role="tablist" aria-label="Carousel navigation dots">
+      <button aria-label="Go to slide 1" class="active" role="tab" aria-selected="true"></button>
+      <button aria-label="Go to slide 2" role="tab"></button>
+    </div>
+  </div>
+</section>
+
+
+
+    <section id="about" style="max-width: 900px; margin: 2rem auto;">
+	  <h2>About Me</h2>
+	  <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap;">
+		<img src="https://media.licdn.com/dms/image/v2/D5603AQH9WGrx0_RiaQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1691576838249?e=1761177600&v=beta&t=Uw7dL_TCnusatVOUvye-ZIercT0NXEgXPn9pTAvmyu0" alt="Your Name" 
+			 style="width: 180px; height: 180px; border-radius: 50%; object-fit: cover; border: 3px solid #bb86fc; box-shadow: 0 0 10px #bb86fc;" />
+		<p style="flex: 1; color: #cccccc; font-size: 1.125rem; line-height: 1.5;">
+		  Hello, I'm a recent joiner and am looking forward to learning more about Capgemini as a group. Pretty new to corporate life and still not sure what's considered business casual.
+			I like coffee (Thank you Capgemini 😊),
+			I like good food, sleep, music, reading, writing… actually I like a lot of things.
+			I'm from Uttarakhand, though I did my bachelor's from Mumbai. I aim to seek meaning—journey the metaphysical world as I call it—and find something.
+			I don't know what I want in life, but I do want to find what I do want…
+			Hope to explore what this company has to offer apart from free coffee (did I mention I like coffee?)
+
+			P.S. I copied the "About Me" from what I wrote when registering for the Buddy Programme :)
+		</p>
+	  </div>
+	</section>
+
+
+    <!-- Skills Section -->
+    <section id="skills">
+      <h2>Skills</h2>
+      <ul>
+        <li>ML/AI</li></li>
+        <li>CSS3</li>
+        <li>JavaScript</li>
+        <li>React</li>
+        <li>Node.js</li>
+        <li>Python</li>
+        <li>Git & GitHub</li>
+      </ul>
+    </section>
+
+    <section id="projects">
+	  <h2>Projects</h2>
+	  <div class="projects-grid">
+		<article class="project-item">
+		  <h3>Decoding Misinformation</h3>
+		  <p>A Comparative Study of AI Models for Fake News Detection</p>
+		  <button type="button" data-modal-target="modal1">More Info</button>
+		</article>
+
+		<article class="project-item">
+		  <h3>Crime Pattern Analysis</h3>
+		  <p>Data preprocessing in R, analysis in Python</p>
+		  <button type="button" data-modal-target="modal2">More Info</button>
+		</article>
+	  </div>
+
+	  <!-- Modals -->
+	  <div id="modal1" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal1-title">
+		<div class="modal-content">
+		  <button class="modal-close" aria-label="Close modal">&times;</button>
+		  <h3 id="modal1-title">Decoding Misinformation Details</h3>
+		  <p>Decoding Misinformation</h3>
+		  <p>A Comparative Study of AI Models for Fake News Detection</p>
+		  <a href="#" target="_blank" rel="noopener noreferrer">Visit project</a>
+		</div>
+	  </div>
+
+	  <div id="modal2" class="modal" aria-hidden="true" role="dialog" aria-labelledby="modal2-title">
+		<div class="modal-content">
+		  <button class="modal-close" aria-label="Close modal">&times;</button>
+		  <h3 id="modal2-title">Project Two Details</h3>
+		  <p>An online store featuring real-time search, user accounts, and an optimized checkout. Developed using React, Node.js, and MongoDB.</p>
+		  <a href="#" target="_blank" rel="noopener noreferrer">Visit project</a>
+		</div>
+	  </div>
+	</section>
+
+	<script>
+	  // Modal open and close logic
+	  document.querySelectorAll("#projects button[data-modal-target]").forEach(button => {
+		button.addEventListener("click", () => {
+		  const modalId = button.getAttribute("data-modal-target");
+		  const modal = document.getElementById(modalId);
+		  modal.style.display = "flex";
+		  modal.setAttribute("aria-hidden", "false");
+		  // Trap focus inside modal (for accessibility)
+		  modal.querySelector(".modal-close").focus();
+		});
+	  });
+
+	  document.querySelectorAll(".modal-close").forEach(button => {
+		button.addEventListener("click", () => {
+		  const modal = button.closest(".modal");
+		  modal.style.display = "none";
+		  modal.setAttribute("aria-hidden", "true");
+		});
+	  });
+
+	  // Close modal on clicking outside modal-content
+	  document.querySelectorAll(".modal").forEach(modal => {
+		modal.addEventListener("click", e => {
+		  if (e.target === modal) {
+			modal.style.display = "none";
+			modal.setAttribute("aria-hidden", "true");
+		  }
+		});
+	  });
+
+	  // Close modal on Escape key
+	  document.addEventListener("keydown", event => {
+		if (event.key === "Escape") {
+		  document.querySelectorAll(".modal").forEach(modal => {
+			if (modal.style.display === "flex") {
+			  modal.style.display = "none";
+			  modal.setAttribute("aria-hidden", "true");
+			}
+		  });
+		}
+	  });
+	  
+  // Carousel functionality
+  const carousel = document.getElementById('carousel');
+  const images = carousel.querySelectorAll('img');
+  const dotsContainer = document.getElementById('carousel-dots');
+  const dots = dotsContainer.querySelectorAll('button');
+  let currentIndex = 0;
+  let intervalId;
+
+  function showSlide(index) {
+    images.forEach((img, i) => {
+      img.classList.toggle('active', i === index);
+      dots[i].classList.toggle('active', i === index);
+      dots[i].setAttribute('aria-selected', i === index ? 'true' : 'false');
+    });
+    currentIndex = index;
+  }
+
+  function nextSlide() {
+    let next = (currentIndex + 1) % images.length;
+    showSlide(next);
+  }
+
+  // Click event for dots
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      showSlide(i);
+      resetInterval();
+    });
+  });
+
+  // Auto slide every 4 seconds
+  function startInterval() {
+    intervalId = setInterval(nextSlide, 4000);
+  }
+  function resetInterval() {
+    clearInterval(intervalId);
+    startInterval();
+  }
+
+	const musicToggle = document.getElementById('music-toggle');
+	const bgMusic = document.getElementById('bg-music');
+
+	function updateButtonIcon(isPlaying) {
+	  musicToggle.textContent = isPlaying ? '🔈' : '🔇';
+	}
+
+	async function playMusic() {
+	  try {
+		await bgMusic.play();
+		updateButtonIcon(true);
+	  } catch (error) {
+		console.warn('Autoplay prevented, user interaction needed.', error);
+		updateButtonIcon(false);
+	  }
+	}
+
+	// Auto-play on page load
+	window.addEventListener('load', () => {
+	  playMusic();
+	});
+
+	musicToggle.addEventListener('click', () => {
+	  if (bgMusic.paused) {
+		bgMusic.play();
+		updateButtonIcon(true);
+	  } else {
+		bgMusic.pause();
+		updateButtonIcon(false);
+	  }
+	});
+
+
+
+
+	</script>
+
+    <!-- Contact Section -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <form action="mailto:your.email@example.com" method="POST" enctype="text/plain">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="Name" required maxlength="50" />
+        <label for="email">Email</label>
+        <input type="email" id="email" name="Email" required maxlength="50" />
+        <label for="message">Message</label>
+        <textarea id="message" name="Message" rows="5" required maxlength="500"></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Your Name. All rights reserved.
+  </footer>
+
+</body>
+</html>
